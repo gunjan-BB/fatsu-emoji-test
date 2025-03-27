@@ -1,0 +1,32 @@
+{
+  "name": "fatsu-emoji",
+  "version": "0.0.1",
+  "description": "A licensed emoji library",
+  "keywords": [
+    "fatsu",
+    "emoji"
+  ],
+  "homepage": "https://github.com/gunjan-BB/fatsu-emoji.git",
+  "bugs": {
+    "url": "https://github.com/gunjan-BB/fatsu-emoji/issues"
+  },
+  "author": "Gunjan Akbari <gunjan.akbari@bigbrainyinfotech.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gunjan-BB/fatsu-emoji.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "ci": "npm run build",
+    "format": "prettier --write ."
+  },
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  }
+}
