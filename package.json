@@ -1,6 +1,7 @@
 {
   "name": "fatsu-emoji",
   "version": "0.0.1",
+  "main": "dist/index.js",
   "description": "A licensed emoji library",
   "keywords": [
     "fatsu",
@@ -20,12 +21,19 @@
   ],
   "scripts": {
     "build": "tsc",
-    "ci": "npm run build",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
+    "ci": "npm run build && npm run check-format && npm run check-exports",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+      "local-release": "changeset version && changeset publish",
+      "prepublishOnly": "npm run ci"
+
   },
   "type": "module",
   "license": "MIT",
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.4",
+    "@changesets/cli": "^2.28.1",
     "prettier": "^3.5.3",
     "typescript": "^5.8.2"
   }
