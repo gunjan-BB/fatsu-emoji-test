@@ -91,7 +91,7 @@ export class EmojiPicker {
     this.emojiMap.forEach(({ category, categoryIcon }) => {
       const categoryImg = document.createElement('img');
       categoryImg.classList.add('category-button');
-      categoryImg.src = categoryIcon + `?cache_bust=${this.cache_bust}`;
+      categoryImg.src = categoryIcon;
       categoryImg.width = 32;
       categoryImg.height = 32;
       if (category === this.activeCategory) {
@@ -202,6 +202,9 @@ export class EmojiPicker {
         img.addEventListener('mouseenter', () => {
           this.updateHoverDisplay(url, name);
         });
+        img.addEventListener('mouseleave', () => {
+          this.updateHoverLeaveDisplay();
+        });
         img.addEventListener('click', () => {
           callback({ url, name });
           this.insertEmoji(trigger, url);
@@ -300,6 +303,18 @@ export class EmojiPicker {
       hoverEmoji.src = emojiUrl + `?cache_bust=${this.cache_bust}`;
       hoverEmoji.alt = emojiName;
       emojiNameSpan.textContent = emojiName;
+    }
+  }
+  private updateHoverLeaveDisplay() {
+    if (this.activePicker) {
+      const defaultImage =
+        'https://media.fatsu.com/fatsoji/smlies/Bookworm.png?cache_bust=' +
+        this.cache_bust;
+      this.activePicker.hoverDisplay.classList.add('emoji-hover-display');
+      this.activePicker.hoverDisplay.innerHTML = `
+    <img class="hover-emoji" src="${defaultImage}" height="32" width="32" alt="default emoji">
+    <span class="emoji-name">What's your mood?</span>
+  `;
     }
   }
 }
