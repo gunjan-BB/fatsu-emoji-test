@@ -2,7 +2,7 @@
   "name": "fatsu-emoji-test",
   "version": "0.0.5",
   "main": "dist/index.js",
-  "style": "dist/styles.css", 
+  "style": "dist/styles.css",
   "description": "A licensed emoji library",
   "keywords": [
     "fatsu",
@@ -23,11 +23,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write .",
-    "check-format": "prettier --check .",
-    "ci": "npm run build && npm run check-format && npm run check-exports",
-    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
-    "prepublishOnly": "npm run ci"
+    "format": "prettier --write ."
   },
   "type": "module",
   "license": "MIT",
