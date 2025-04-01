@@ -1,11 +1,11 @@
 import { emojiData } from './data.js';
-
 export class EmojiPicker {
   private activePicker: {
     trigger: HTMLElement;
     picker: HTMLDivElement;
     searchInput: HTMLInputElement;
     categoryContainer: HTMLDivElement;
+    hoverDisplay: HTMLDivElement; // New section for hovered emoji display
   } | null = null;
 
   private emojiMap = emojiData;
@@ -71,11 +71,23 @@ export class EmojiPicker {
     const emojiList = document.createElement('div');
     emojiList.classList.add('emoji-list');
 
+    // Create the section to display the hovered emoji name and image
+    const hoverDisplay = document.createElement('div');
+    const defaultImage =
+      'https://media.fatsu.com/fatsoji/smlies/Bookworm.png?cache_bust=' +
+      this.cache_bust;
+    hoverDisplay.classList.add('emoji-hover-display');
+    hoverDisplay.innerHTML = `
+      <img class="hover-emoji" src="${defaultImage}" height="32" width="32" alt="default emoji">
+      <span class="emoji-name">What's your mood?</span>
+    `;
+
     searchInput.addEventListener('input', () => {
       this.filterEmojis(searchInput.value, emojiList, callback, trigger);
       searchInput.focus();
     });
 
+    // Adding categories to categoryContainer
     this.emojiMap.forEach(({ category, categoryIcon }) => {
       const categoryImg = document.createElement('img');
       categoryImg.classList.add('category-button');
@@ -95,13 +107,23 @@ export class EmojiPicker {
       categoryContainer.appendChild(categoryImg);
     });
 
+    // First append searchInput, categoryContainer, and emojiList
     picker.appendChild(searchInput);
     picker.appendChild(categoryContainer);
     picker.appendChild(emojiList);
 
+    // Now append the hoverDisplay after the emoji list
+    picker.appendChild(hoverDisplay);
+
     document.body.appendChild(overlay);
     document.body.appendChild(picker);
-    this.activePicker = { trigger, picker, searchInput, categoryContainer };
+    this.activePicker = {
+      trigger,
+      picker,
+      searchInput,
+      categoryContainer,
+      hoverDisplay,
+    };
 
     this.populateEmojis(emojiList, callback, trigger);
     this.positionPicker(trigger, picker);
@@ -177,6 +199,9 @@ export class EmojiPicker {
         img.height = 32;
         img.width = 32;
         img.alt = 'emoji';
+        img.addEventListener('mouseenter', () => {
+          this.updateHoverDisplay(url, name);
+        });
         img.addEventListener('click', () => {
           callback({ url, name });
           this.insertEmoji(trigger, url);
@@ -235,7 +260,6 @@ export class EmojiPicker {
     } else if (trigger.isContentEditable) {
       trigger.innerHTML += emoji;
     }
-    // this.closePicker();
   }
 
   private handleResize = () => {
@@ -261,5 +285,21 @@ export class EmojiPicker {
 
     window.removeEventListener('resize', this.handleResize);
     window.addEventListener('resize', this.handleResize);
+  }
+
+  private updateHoverDisplay(emojiUrl: string, emojiName: string) {
+    if (this.activePicker) {
+      const hoverDisplay = this.activePicker.hoverDisplay;
+      const hoverEmoji = hoverDisplay.querySelector(
+        '.hover-emoji',
+      ) as HTMLImageElement;
+      const emojiNameSpan = hoverDisplay.querySelector(
+        '.emoji-name',
+      ) as HTMLSpanElement;
+
+      hoverEmoji.src = emojiUrl + `?cache_bust=${this.cache_bust}`;
+      hoverEmoji.alt = emojiName;
+      emojiNameSpan.textContent = emojiName;
+    }
   }
 }
