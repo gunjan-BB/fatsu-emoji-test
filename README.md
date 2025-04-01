@@ -1,1 +1,4 @@
 A package for providing integrations for fatsu emoji
+
+NOTE:-
+NEED TO MANUALLY COPY AND PASTE THE CSS IN BUILD OUTPUT TO APPLY BASIC STYLES WHEN USING THE LIBRARY

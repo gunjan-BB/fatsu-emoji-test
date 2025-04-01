@@ -1,4 +1,5 @@
 import { emojiData } from './data.js';
+
 export class EmojiPicker {
   private activePicker: {
     trigger: HTMLElement;
@@ -8,11 +9,26 @@ export class EmojiPicker {
   } | null = null;
 
   private emojiMap = emojiData;
-
-  private activeCategory: string = this.emojiMap[0]!.category;
+  private cache_bust: number = Date.now();
+  private activeCategory: string;
 
   constructor() {
+    this.activeCategory = this.emojiMap[0]?.category || ''; // ✅ Initialize with the first category
     this.init();
+    this.getAndSetCacheTime();
+  }
+
+  private getAndSetCacheTime() {
+    try {
+      const bust = localStorage.getItem('fatsu_emoji_cache_bust');
+      this.cache_bust = bust ? Number(bust) : Date.now();
+      localStorage.setItem(
+        'fatsu_emoji_cache_bust',
+        this.cache_bust.toString(),
+      );
+    } catch (e) {
+      this.cache_bust = Date.now();
+    }
   }
 
   private init() {
@@ -34,9 +50,11 @@ export class EmojiPicker {
   ) {
     this.closePicker();
 
-    // Transparent overlay
+    this.activeCategory = this.emojiMap[0]?.category || ''; // ✅ Reset to the first category
+
     const overlay = document.createElement('div');
     overlay.classList.add('emoji-picker-overlay');
+    overlay.style.overflow = 'hidden'; // ✅ Prevent scrolling
     overlay.addEventListener('click', () => this.closePicker());
 
     const picker = document.createElement('div');
@@ -55,15 +73,15 @@ export class EmojiPicker {
 
     searchInput.addEventListener('input', () => {
       this.filterEmojis(searchInput.value, emojiList, callback, trigger);
-      searchInput.focus(); // Ensure input retains focus
+      searchInput.focus();
     });
 
     this.emojiMap.forEach(({ category, categoryIcon }) => {
       const categoryImg = document.createElement('img');
       categoryImg.classList.add('category-button');
-      categoryImg.src = categoryIcon;
-      categoryImg.width = 28;
-      categoryImg.height = 28;
+      categoryImg.src = categoryIcon + `?cache_bust=${this.cache_bust}`;
+      categoryImg.width = 32;
+      categoryImg.height = 32;
       if (category === this.activeCategory) {
         categoryImg.classList.add('active-category');
       }
@@ -88,6 +106,9 @@ export class EmojiPicker {
     this.populateEmojis(emojiList, callback, trigger);
     this.positionPicker(trigger, picker);
     searchInput.focus();
+
+    // Disable page scroll when picker is open
+    document.body.classList.add('no-scroll');
   }
 
   public closePicker() {
@@ -95,6 +116,10 @@ export class EmojiPicker {
       this.activePicker.picker.remove();
       document.querySelector('.emoji-picker-overlay')?.remove();
       this.activePicker = null;
+
+      // Enable page scroll when picker is closed
+      document.body.classList.remove('no-scroll');
+      window.removeEventListener('resize', this.handleResize);
     }
   }
 
@@ -104,6 +129,11 @@ export class EmojiPicker {
     callback: (value: { url: string; name: string }) => void,
     trigger: HTMLElement,
   ) {
+    if (this.activePicker) {
+      this.activePicker.categoryContainer.style.display = query
+        ? 'none'
+        : 'flex';
+    }
     this.populateEmojis(container, callback, trigger, query);
   }
 
@@ -114,11 +144,11 @@ export class EmojiPicker {
     filter: string = '',
   ) {
     container.innerHTML = '';
-
     let hasEmojis = false;
+    const isSearching = filter.length > 0;
 
     this.emojiMap.forEach(({ category, emojis: emojiData }) => {
-      if (this.activeCategory && this.activeCategory !== category) return;
+      if (!isSearching && this.activeCategory !== category) return;
 
       const filteredEmojis = filter
         ? emojiData.filter(({ name, url }) =>
@@ -127,31 +157,37 @@ export class EmojiPicker {
         : emojiData;
 
       if (filteredEmojis.length === 0) return;
-
       hasEmojis = true;
 
       const categorySection = document.createElement('div');
       categorySection.classList.add('emoji-category-section');
-      categorySection.innerHTML = `<h4>${category}</h4>`;
+
+      const categoryTitle = document.createElement('h4');
+      categoryTitle.textContent = category;
+      categoryTitle.classList.add('emoji-category-title');
+      categorySection.appendChild(categoryTitle);
+
+      const emojiContainer = document.createElement('div');
+      emojiContainer.classList.add('emoji-container');
 
       filteredEmojis.forEach(({ url, name }) => {
         const img = document.createElement('img');
         img.classList.add('emoji-button');
-        img.src = url;
-        img.height = 16;
-        img.width = 16;
+        img.src = url + `?cache_bust=${this.cache_bust}`;
+        img.height = 32;
+        img.width = 32;
         img.alt = 'emoji';
         img.addEventListener('click', () => {
           callback({ url, name });
           this.insertEmoji(trigger, url);
         });
-        categorySection.appendChild(img);
+        emojiContainer.appendChild(img);
       });
 
+      categorySection.appendChild(emojiContainer);
       container.appendChild(categorySection);
     });
 
-    // If no emojis were found, show a message
     if (!hasEmojis) {
       const noResultsMessage = document.createElement('div');
       noResultsMessage.classList.add('no-emojis-found');
@@ -186,7 +222,7 @@ export class EmojiPicker {
     trigger: HTMLElement,
   ) {
     this.activeCategory = category;
-    const searchQuery = this.activePicker?.searchInput.value || ''; // Preserve search query
+    const searchQuery = this.activePicker?.searchInput.value || '';
     this.populateEmojis(container, callback, trigger, searchQuery);
   }
 
@@ -199,13 +235,31 @@ export class EmojiPicker {
     } else if (trigger.isContentEditable) {
       trigger.innerHTML += emoji;
     }
-    this.closePicker();
+    // this.closePicker();
   }
+
+  private handleResize = () => {
+    if (this.activePicker) {
+      this.positionPicker(this.activePicker.trigger, this.activePicker.picker);
+    }
+  };
 
   private positionPicker(trigger: HTMLElement, picker: HTMLDivElement) {
     const rect = trigger.getBoundingClientRect();
+    const spaceAbove = rect.top;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const pickerHeight = picker.offsetHeight;
+
     picker.style.position = 'absolute';
+
+    picker.style.top =
+      spaceAbove > pickerHeight || spaceBelow < pickerHeight
+        ? `${rect.top + window.scrollY - pickerHeight - 5}px`
+        : `${rect.bottom + window.scrollY + 5}px`;
+
     picker.style.left = `${rect.left + window.scrollX}px`;
-    picker.style.top = `${rect.bottom + window.scrollY + 5}px`;
+
+    window.removeEventListener('resize', this.handleResize);
+    window.addEventListener('resize', this.handleResize);
   }
 }

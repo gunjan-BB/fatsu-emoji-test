@@ -2,6 +2,7 @@
   "name": "fatsu-emoji-test",
   "version": "0.0.4",
   "main": "dist/index.js",
+  "style": "dist/styles.css", 
   "description": "A licensed emoji library",
   "keywords": [
     "fatsu",
@@ -17,7 +18,8 @@
     "url": "git+https://github.com/gunjan-BB/fatsu-emoji.git"
   },
   "files": [
-    "dist"
+    "dist/emoji-picker.js",
+    "dist/styles.css"
   ],
   "scripts": {
     "build": "tsc",
