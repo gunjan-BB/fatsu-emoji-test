@@ -1,6 +1,6 @@
 {
   "name": "fatsu-emoji-test",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/index.js",
   "style": "dist/styles.css", 
   "description": "A licensed emoji library",
