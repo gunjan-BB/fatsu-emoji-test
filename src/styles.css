@@ -169,3 +169,21 @@ body.no-scroll {
 .emoji-category-container::-webkit-scrollbar-track {
   background: transparent;
 }
+
+
+.emoji-hover-display {
+  display: flex;
+  align-items: center;
+  padding-top: 10px; /* Adds space between the emoji section and the hover display */
+  border-top: 1px solid #ffbff7;
+}
+
+.emoji-hover-display img {
+  margin-right: 10px;
+}
+
+.emoji-hover-display .emoji-name {
+  font-size: 16px;
+  color: #fff;
+}
+
