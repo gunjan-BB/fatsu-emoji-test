@@ -1,4 +1,3 @@
-
 .emoji-hover-display {
   display: flex;
   align-items: center;
@@ -14,9 +13,6 @@
   font-size: 16px;
   color: #fff;
 }
-
-
-
 
 .emoji-picker {
   position: absolute;

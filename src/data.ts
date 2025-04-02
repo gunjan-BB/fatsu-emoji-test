@@ -1,20 +1,3 @@
-import building from './assets/building.svg';
-import creatures from './assets/creatures.svg';
-import fashion from './assets/fashion.svg';
-import festive from './assets/festive.svg';
-import flags from './assets/flags.svg';
-import flowers from './assets/flowers.svg';
-import food from './assets/food.svg';
-import hands from './assets/hands.svg';
-import love from './assets/love.svg';
-import smile from './assets/smile.svg';
-import sports from './assets/sports.svg';
-import study from './assets/study.svg';
-import tools from './assets/tools.svg';
-import travel from './assets/travel.svg';
-import utility from './assets/utility.svg';
-import weather from './assets/weather.svg';
-
 export const emojiData: {
   category: string;
   categoryIcon: string;
@@ -22,7 +5,7 @@ export const emojiData: {
 }[] = [
   {
     category: 'buildings',
-    categoryIcon: building,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/building.svg',
     emojis: [
       {
         name: 'apartment building',
@@ -124,7 +107,7 @@ export const emojiData: {
   },
   {
     category: 'creatures',
-    categoryIcon: creatures,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/creatures.svg',
     emojis: [
       {
         name: 'antsy',
@@ -614,7 +597,7 @@ export const emojiData: {
   },
   {
     category: 'fashion',
-    categoryIcon: fashion,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/fashion.svg',
     emojis: [
       {
         name: 'ankle boots',
@@ -1036,7 +1019,7 @@ export const emojiData: {
   },
   {
     category: 'festive',
-    categoryIcon: festive,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/festive.svg',
     emojis: [
       {
         name: 'balloon',
@@ -1177,7 +1160,7 @@ export const emojiData: {
     ],
   },
   {
-    categoryIcon: flags,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/flags.svg',
     category: 'flags',
     emojis: [
       {
@@ -1931,7 +1914,7 @@ export const emojiData: {
     ],
   },
   {
-    categoryIcon: flowers,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/flowers.svg',
     category: 'flowers',
     emojis: [
       {
@@ -1994,7 +1977,7 @@ export const emojiData: {
   },
   {
     category: 'food',
-    categoryIcon: food,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/food.svg',
     emojis: [
       {
         name: 'avocado',
@@ -2476,7 +2459,7 @@ export const emojiData: {
   },
   {
     category: 'hands',
-    categoryIcon: hands,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/hands.svg',
     emojis: [
       {
         name: 'backhand pointing left',
@@ -2614,7 +2597,7 @@ export const emojiData: {
   },
   {
     category: 'love',
-    categoryIcon: love,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/love.svg',
     emojis: [
       {
         name: '#bff',
@@ -2700,7 +2683,7 @@ export const emojiData: {
   },
   {
     category: 'office tools',
-    categoryIcon: tools,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/tools.svg',
     emojis: [
       {
         name: 'binder',
@@ -2914,7 +2897,7 @@ export const emojiData: {
   },
   {
     category: 'smiles',
-    categoryIcon: smile,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/smile.svg',
     emojis: [
       {
         name: 'alienadmire',
@@ -3280,7 +3263,7 @@ export const emojiData: {
   },
   {
     category: 'sports',
-    categoryIcon: sports,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/sports.svg',
     emojis: [
       {
         name: 'slots',
@@ -3542,7 +3525,7 @@ export const emojiData: {
   },
   {
     category: 'study',
-    categoryIcon: study,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/study.svg',
     emojis: [
       {
         name: 'artist palette',
@@ -3652,7 +3635,7 @@ export const emojiData: {
   },
   {
     category: 'travel',
-    categoryIcon: travel,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/travel.svg',
     emojis: [
       {
         name: 'airplane arrival',
@@ -3950,7 +3933,7 @@ export const emojiData: {
   },
   {
     category: 'utility',
-    categoryIcon: utility,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/utility.svg',
     emojis: [
       {
         name: 'alembic',
@@ -4088,7 +4071,7 @@ export const emojiData: {
   },
   {
     category: 'weather',
-    categoryIcon: weather,
+    categoryIcon: 'https://media.fatsu.com/fatsoji/categories/weather.svg',
     emojis: [
       {
         name: 'alarm clock',
