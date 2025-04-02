@@ -1266,7 +1266,7 @@ export const emojiData: {
       },
       {
         name: 'bosnia and herzegovina',
-        url: 'https://media.fatsu.com/fatsoji/flags/Bosnia and Herzegovina.png',
+        url: 'https://media.fatsu.com/fatsoji/flags/Bosnia%20and%20Herzegovina.png',
       },
       {
         name: 'brazil',
