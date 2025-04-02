@@ -1,3 +1,23 @@
+
+.emoji-hover-display {
+  display: flex;
+  align-items: center;
+  padding-top: 10px; /* Adds space between the emoji section and the hover display */
+  border-top: 1px solid #ffbff7;
+}
+
+.emoji-hover-display img {
+  margin-right: 10px;
+}
+
+.emoji-hover-display .emoji-name {
+  font-size: 16px;
+  color: #fff;
+}
+
+
+
+
 .emoji-picker {
   position: absolute;
   background: #1d1159;
@@ -33,7 +53,6 @@
 
 .emoji-category-container {
   display: flex;
-  gap: 5px;
   margin-bottom: 10px;
   overflow-x: auto;
   white-space: nowrap;
@@ -60,16 +79,17 @@
   border: none;
   cursor: pointer;
   font-size: 18px;
-  padding: 5px 8px;
+  padding: 5px;
   flex-shrink: 0;
   border-radius: 4px;
+  filter: brightness(0.9);
   &:hover {
-    background-color: #fff;
+    filter: brightness(2);
   }
 }
 
 .active-category {
-  background-color: #fff;
+  filter: brightness(2);
 }
 
 .emoji-list {
@@ -169,21 +189,3 @@ body.no-scroll {
 .emoji-category-container::-webkit-scrollbar-track {
   background: transparent;
 }
-
-
-.emoji-hover-display {
-  display: flex;
-  align-items: center;
-  padding-top: 10px; /* Adds space between the emoji section and the hover display */
-  border-top: 1px solid #ffbff7;
-}
-
-.emoji-hover-display img {
-  margin-right: 10px;
-}
-
-.emoji-hover-display .emoji-name {
-  font-size: 16px;
-  color: #fff;
-}
-
