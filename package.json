@@ -1,8 +1,6 @@
 {
   "name": "fatsu-emoji-test",
-  "version": "0.1.2",
-  "main": "dist/index.js",
-  "style": "dist/styles.css",
+  "version": "0.1.3",
   "description": "A licensed emoji library",
   "keywords": [
     "fatsu",
@@ -17,18 +15,32 @@
     "type": "git",
     "url": "git+https://github.com/gunjan-BB/fatsu-emoji.git"
   },
+  "license": "MIT",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "style": "dist/styles.css",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rollup -c",
     "format": "prettier --write ."
   },
   "type": "module",
-  "license": "MIT",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.4",
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-url": "^8.0.2",
     "prettier": "^3.5.3",
+    "rollup": "^4.9.5",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-postcss": "^4.0.2",
     "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
   }
 }
