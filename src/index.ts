@@ -1,2 +1,2 @@
-export { EmojiPicker } from './picker.js';
+export { default as EmojiPicker } from './picker';
 import './styles.css';

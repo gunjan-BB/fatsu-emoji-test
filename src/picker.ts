@@ -1,5 +1,5 @@
 import { emojiData } from './data.js';
-export class EmojiPicker {
+export default class EmojiPicker {
   private activePicker: {
     trigger: HTMLElement;
     picker: HTMLDivElement;

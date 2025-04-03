@@ -1,31 +1,38 @@
 {
   "compilerOptions": {
-    /* Base Options: */
+    /* Base Options */
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es2022",
     "allowJs": true,
-    "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    //   "lib": ["es2022"],
 
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    /* If transpiling with TypeScript: */
-    "module": "NodeNext",
+    /* Module System */
+    "module": "ESNext",
+    "lib": ["es2022", "dom"],
+
+    /* Output Configuration */
     "outDir": "dist",
     "rootDir": "src",
     "sourceMap": true,
-
-    /* AND if you're building for a library: */
     "declaration": true,
+    "declarationMap": true,
 
-    /* AND if you're building for a library in a monorepo: */
-    "declarationMap": true
-  }
+    /* Prevents extra .js files during type generation */
+    "emitDeclarationOnly": false
+  },
+  "exclude": [
+    "rollup.config.js", // ✅ Ignore Rollup config
+    "node_modules", // ✅ Exclude dependencies
+    "dist", // ✅ Prevent conflicts with built files
+    "*.config.js", // ✅ Generic exclusion for build configs
+    "*.config.mjs" // ✅ Also exclude `.mjs` configs if applicable
+  ]
 }

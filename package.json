@@ -1,28 +1,28 @@
 {
   "name": "fatsu-emoji-test",
-  "version": "0.3.0",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+  "version": "0.4.5",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
       "browser": "./dist/index.js",
-      "styles": "./dist/styles.css",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
     },
-    "./dist/": {
-      "import": "./dist/",
-      "require": "./dist/"
-    }
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json",
+    "./types": "./dist/index.d.ts"
   },
-  "types": "./dist/index.d.ts",
   "sideEffects": [
     "dist/styles.css"
   ],
   "files": [
     "dist",
-    "dist/styles.css"
+    "dist/styles.css",
+    "dist/index.d.ts"
   ],
   "description": "A licensed emoji library",
   "keywords": [
@@ -48,6 +48,7 @@
     "@arethetypeswrong/cli": "^0.17.4",
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
     "prettier": "^3.5.3",
     "rollup": "^4.39.0",
@@ -55,5 +56,10 @@
     "rollup-plugin-postcss": "^4.0.2",
     "tslib": "^2.8.1",
     "typescript": "^5.8.2"
+  },
+  "unpkg": "dist/index.js",
+  "jsdelivr": "dist/index.js",
+  "dependencies": {
+    "fatsu-emoji-test": "^0.4.4"
   }
 }
