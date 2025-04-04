@@ -1,5 +1,6 @@
 import { emojiData } from './data.js';
 export default class EmojiPicker {
+  static globalConfig: Record<string, string> = {};
   private activePicker: {
     trigger: HTMLElement;
     picker: HTMLDivElement;
@@ -7,27 +8,70 @@ export default class EmojiPicker {
     categoryContainer: HTMLDivElement;
     hoverDisplay: HTMLDivElement; // New section for hovered emoji display
   } | null = null;
+  private localKey: string;
 
   private emojiMap = emojiData;
   private cache_bust: number = Date.now();
   private activeCategory: string;
+  private hasBeenVerified = false;
 
-  constructor() {
+  constructor(key: string = '') {
+    this.localKey = key;
     this.activeCategory = this.emojiMap[0]?.category || ''; // ✅ Initialize with the first category
     this.init();
-    this.getAndSetCacheTime();
+    this.verifyKey();
+  }
+
+  private async verify(key: string) {
+    try {
+      const res = await fetch(
+        `https://staging-admin.fatsu.com/validate_purchase_key?key=${key}`,
+      );
+      const parsedRes = (await res.json()) as unknown as {
+        key_present: boolean;
+      };
+      if (parsedRes.key_present) {
+        this.hasBeenVerified = true;
+        this.getAndSetCacheTime();
+      } else {
+        this.hasBeenVerified = false;
+      }
+    } catch (e) {
+      this.hasBeenVerified = false;
+    }
+  }
+
+  private async verifyKey() {
+    try {
+      if (EmojiPicker.globalConfig.key) {
+        await this.verify(EmojiPicker.globalConfig.key);
+      } else if (this.localKey) {
+        await this.verify(this.localKey);
+      } else {
+        this.hasBeenVerified = false;
+      }
+    } catch (e) {
+      this.hasBeenVerified = false;
+    }
   }
 
   private getAndSetCacheTime() {
+    const CACHE_KEY = 'fatsu_emoji_cache_bust';
+    const now = Date.now();
+    const expiryTime = now + 7 * 24 * 60 * 60 * 1000; // 7 days from now
+
     try {
-      const bust = localStorage.getItem('fatsu_emoji_cache_bust');
-      this.cache_bust = bust ? Number(bust) : Date.now();
-      localStorage.setItem(
-        'fatsu_emoji_cache_bust',
-        this.cache_bust.toString(),
-      );
+      const stored = localStorage.getItem(CACHE_KEY);
+      const storedExpiry = stored ? Number(stored) : 0;
+
+      if (storedExpiry && now < storedExpiry) {
+        this.cache_bust = storedExpiry;
+      } else {
+        this.cache_bust = expiryTime;
+        localStorage.setItem(CACHE_KEY, this.cache_bust.toString());
+      }
     } catch (e) {
-      this.cache_bust = Date.now();
+      this.cache_bust = expiryTime;
     }
   }
 
@@ -49,6 +93,7 @@ export default class EmojiPicker {
     callback: (value: { url: string; name: string }) => void,
   ) {
     this.closePicker();
+    if (!this.hasBeenVerified) return;
 
     this.activeCategory = this.emojiMap[0]?.category || ''; // ✅ Reset to the first category
 
@@ -207,7 +252,6 @@ export default class EmojiPicker {
         });
         img.addEventListener('click', () => {
           callback({ url, name });
-          this.insertEmoji(trigger, url);
         });
         emojiContainer.appendChild(img);
       });
@@ -252,17 +296,6 @@ export default class EmojiPicker {
     this.activeCategory = category;
     const searchQuery = this.activePicker?.searchInput.value || '';
     this.populateEmojis(container, callback, trigger, searchQuery);
-  }
-
-  private insertEmoji(trigger: HTMLElement, emoji: string) {
-    if (
-      trigger instanceof HTMLInputElement ||
-      trigger instanceof HTMLTextAreaElement
-    ) {
-      trigger.value += emoji;
-    } else if (trigger.isContentEditable) {
-      trigger.innerHTML += emoji;
-    }
   }
 
   private handleResize = () => {
