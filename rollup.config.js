@@ -1,50 +1,52 @@
-import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
+import commonjs from '@rollup/plugin-commonjs';
+import esbuild from 'rollup-plugin-esbuild';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
-import terser from '@rollup/plugin-terser';
+import  terser  from '@rollup/plugin-terser';
 
 export default [
-  // **📌 Main Build: ESM + CJS + IIFE**
   {
     input: 'src/index.ts',
     output: [
       {
-        file: 'dist/index.mjs', // ✅ Use only `index.mjs` for ESM
+        file: 'dist/index.mjs',
         format: 'esm',
         sourcemap: true,
-        exports: 'named', // ✅ Ensures named exports for ESM
+        exports: 'named',
       },
       {
-        file: 'dist/index.cjs', // ✅ Use only `index.cjs` for CJS
+        file: 'dist/index.cjs',
         format: 'cjs',
         sourcemap: true,
-        exports: 'named', // ✅ Ensures named exports for CommonJS
+        exports: 'named',
       },
       {
         file: 'dist/index.js',
         format: 'iife',
         name: 'EmojiPicker',
         sourcemap: true,
-        plugins: [terser()], // ✅ No named import needed
+        plugins: [terser()],
       },
     ],
     plugins: [
       resolve(),
       commonjs(),
-      typescript({ tsconfig: './tsconfig.json' }),
+      esbuild({
+        target: 'es2022', // ✅ or 'esnext' to force native #privateFields
+        tsconfig: 'tsconfig.json',
+        sourceMap: true,
+        minify: false,
+      }),
       postcss({
-        extract: 'styles.css', // ✅ Ensures styles.css is created
+        extract: 'styles.css',
       }),
     ],
   },
-
-  // **📌 Type Definitions Build**
   {
     input: 'src/index.ts',
     output: [{ file: 'dist/index.d.ts', format: 'es' }],
     plugins: [dts()],
-    external: [/\.css$/], // ✅ Ignore CSS files in type definitions
+    external: [/\.css$/],
   },
 ];

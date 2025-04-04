@@ -13,7 +13,7 @@ export default class EmojiPicker {
   private emojiMap = emojiData;
   private cache_bust: number = Date.now();
   private activeCategory: string;
-  private hasBeenVerified = false;
+  #hasBeenVerified = false;
 
   constructor(key: string = '') {
     this.localKey = key;
@@ -31,13 +31,13 @@ export default class EmojiPicker {
         key_present: boolean;
       };
       if (parsedRes.key_present) {
-        this.hasBeenVerified = true;
+        this.#hasBeenVerified = true;
         this.getAndSetCacheTime();
       } else {
-        this.hasBeenVerified = false;
+        this.#hasBeenVerified = false;
       }
     } catch (e) {
-      this.hasBeenVerified = false;
+      this.#hasBeenVerified = false;
     }
   }
 
@@ -48,10 +48,10 @@ export default class EmojiPicker {
       } else if (this.localKey) {
         await this.verify(this.localKey);
       } else {
-        this.hasBeenVerified = false;
+        this.#hasBeenVerified = false;
       }
     } catch (e) {
-      this.hasBeenVerified = false;
+      this.#hasBeenVerified = false;
     }
   }
 
@@ -93,7 +93,7 @@ export default class EmojiPicker {
     callback: (value: { url: string; name: string }) => void,
   ) {
     this.closePicker();
-    if (!this.hasBeenVerified) return;
+    if (!this.#hasBeenVerified) return;
 
     this.activeCategory = this.emojiMap[0]?.category || ''; // ✅ Reset to the first category
 

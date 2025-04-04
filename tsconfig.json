@@ -3,20 +3,23 @@
     /* Base Options */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
     "allowJs": true,
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+
+    //
+    "target": "ES2022",
+    "module": "esnext",
+    "useDefineForClassFields": true,
+    "moduleResolution": "bundler", // if using bundlers like Vite or Rollup
+    "lib": ["dom", "es2020"],
 
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    /* Module System */
-    "module": "ESNext",
-    "lib": ["es2022", "dom"],
 
     /* Output Configuration */
     "outDir": "dist",
