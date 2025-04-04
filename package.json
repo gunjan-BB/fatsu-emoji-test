@@ -1,6 +1,6 @@
 {
   "name": "fatsu-emoji-test",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

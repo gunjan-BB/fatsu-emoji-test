@@ -1,6 +1,7 @@
 import { emojiData } from './data.js';
 export default class EmojiPicker {
   static globalConfig: Record<string, string> = {};
+  public onError?: (err: string) => void;
   private activePicker: {
     trigger: HTMLElement;
     picker: HTMLDivElement;
@@ -35,9 +36,11 @@ export default class EmojiPicker {
         this.getAndSetCacheTime();
       } else {
         this.#hasBeenVerified = false;
+        this.handleError(new Error("Couldn't verify key. Input valid key"));
       }
     } catch (e) {
       this.#hasBeenVerified = false;
+      this.handleError(new Error("Couldn't verify key. Input valid key"));
     }
   }
 
@@ -349,5 +352,10 @@ export default class EmojiPicker {
     <span class="emoji-name">What's your mood?</span>
   `;
     }
+  }
+
+  private handleError(err: Error) {
+    console.warn('[EmojiPicker error]', err.message);
+    this.onError?.(err.message);
   }
 }
