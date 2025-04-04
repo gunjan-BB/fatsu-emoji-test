@@ -19,7 +19,6 @@ export default class EmojiPicker {
   constructor(key: string = '') {
     this.localKey = key;
     this.activeCategory = this.emojiMap[0]?.category || ''; // ✅ Initialize with the first category
-    this.init();
     this.verifyKey();
   }
 
@@ -33,6 +32,7 @@ export default class EmojiPicker {
       };
       if (parsedRes.key_present) {
         this.#hasBeenVerified = true;
+        this.init();
         this.getAndSetCacheTime();
       } else {
         this.#hasBeenVerified = false;
